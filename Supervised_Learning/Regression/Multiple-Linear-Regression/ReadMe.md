@@ -1,4 +1,4 @@
-# Simple linear regression with streamlit
+# Multiple linear regression with streamlit
 
 ##To install:
 
