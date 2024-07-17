@@ -7,5 +7,4 @@
     pip install -r requirements.txt
     streamlit run main.py
 
-
-![Ekran görüntüsü 2024-07-14 231336](https://github.com/user-attachments/assets/a0ed3846-abba-41f6-abaa-5b31eb16bdd5)
+![Ekran görüntüsü 2024-07-17 214228](https://github.com/user-attachments/assets/1705de57-6419-4072-9453-d37a6456b66e)
