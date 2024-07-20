@@ -1,6 +1,6 @@
 # Ridge regression with streamlit
 
-## To install:
+## To install :
 
     git clone https://github.com/baloglu321/Machine_learning_projects.git
     cd Machine_learning_projects/Supervised_Learning/Regression/Ridge-regression/

@@ -76,7 +76,7 @@ def start_streamlit():
         "INFO:l Ridge Regression is a variant of linear regression and uses regularisation to increase its generalisation ability. Ridge Regression works by adding a penalisation term known as the L2 norm. This penalisation involves the sum of the squares of the regression coefficients and thus attempts to shrink large coefficients. Ridge Regression is used to prevent overfitting, but unlike Lasso Regression, it does not reduce the coefficients to zero."
     )
     st.divider()
-    st.caption("Improving by MEB")
+    st.caption(":blue[Improving by MEB]")
     st.divider()
 
 

@@ -74,7 +74,7 @@ def update_model():
     data = pre_process_data(start_date, today=today)
 
     X = data[["Low", "High", "Open", "Close"]].values
-    y = data["Next_Close"].values
+    y = data["Next_Close" ].values
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42
     )
