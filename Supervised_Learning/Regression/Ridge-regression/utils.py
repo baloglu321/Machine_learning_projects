@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.linear_model import Lasso
+from sklearn.linear_model import Ridge
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 import yfinance as yf
@@ -37,7 +37,7 @@ def first_model():
 
     X = data[["Low", "High", "Open", "Close"]][:100].values
     y = data["Next_Close"][:100].values
-    model = Lasso(alpha=0.1)
+    model = Ridge(alpha=1.0)
     model.fit(X, y)
     return model
 
@@ -62,7 +62,7 @@ def calc_hist():
         history.append([date, real_value, predict])
         X = data[["Low", "High", "Open", "Close"]][:index].values
         y = data["Next_Close"][:index].values
-        model = Lasso(alpha=0.1)
+        model = Ridge(alpha=1.0)
         model.fit(X, y)
     return history
 
@@ -79,11 +79,14 @@ def update_model():
         X, y, test_size=0.2, random_state=42
     )
 
-    model = Lasso(alpha=0.1)
+    model = Ridge(alpha=1.0)
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
 
     mse = mean_squared_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
-    lasso_coefficients =  pd.DataFrame(pd.Series(model.coef_, index=["Low", "High", "Open", "Close"]),columns=["Value"])
-    return model, mse, r2,lasso_coefficients
+    ridge_coefficients = pd.DataFrame(
+        pd.Series(model.coef_, index=["Low", "High", "Open", "Close"]),
+        columns=["Value"],
+    )
+    return model, mse, r2, ridge_coefficients
