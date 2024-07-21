@@ -1,4 +1,4 @@
-# Ridge regression with streamlit
+# Polynomial regression with streamlit
 
 ## To install :
 
