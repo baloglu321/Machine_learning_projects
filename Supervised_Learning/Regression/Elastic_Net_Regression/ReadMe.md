@@ -1,4 +1,4 @@
-# Ridge regression with streamlit
+# Elastic_Net regression with streamlit
 
 ## To install :
 
