@@ -16,7 +16,7 @@ def start_streamlit():
     min_values = numeric_columns.min()
     max_values = numeric_columns.max()
     st.header(
-        "Customer Segment Classification with Logistic regression", divider="blue"
+        "Customer Segment Classification with Naive Bayes", divider="blue"
     )
     col1, col2 = st.columns(2)
     with col1:

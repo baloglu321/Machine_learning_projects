@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
@@ -74,7 +74,7 @@ def encode(data):
 def predict(In_values):
     pred_data = load_and_transform(In_values)
 
-    with open("models/reg_model.pkl", "rb") as file:
+    with open("models/bayes_model.pkl", "rb") as file:
         model = pickle.load(file)
     prediction = model.predict(pred_data)
     return prediction[0]
@@ -101,19 +101,19 @@ def update_model():
     with open("models/scaler.pkl", "wb") as file:
         pickle.dump(scaler, file)
 
-    model_logistic_reg = LogisticRegression(max_iter=200)
-    model_logistic_reg.fit(X_train_scaled, y_train_LE)
-    with open("models/reg_model.pkl", "wb") as file:
-        pickle.dump(model_logistic_reg, file)
+    model_naive_bayes = GaussianNB()
+    model_naive_bayes.fit(X_train_scaled, y_train_LE)
+    with open("models/bayes_model.pkl", "wb") as file:
+        pickle.dump(model_naive_bayes, file)
 
-    y_pred = model_logistic_reg.predict(X_test_scaled)
+    y_pred = model_naive_bayes.predict(X_test_scaled)
     accuracy = accuracy_score(y_test_LE, y_pred)
     report = classification_report(y_test_LE, y_pred)
     model_status = [accuracy, report]
     with open("models/model_performance.txt", "w") as file:
         for metric in model_status:
             file.write(f"{metric}\n")
-    return model_logistic_reg
+    return model_naive_bayes
 
 
 """    
