@@ -62,7 +62,9 @@ def start_streamlit():
     st.write(f"Customer segmentation result : {pred}")
 
     st.divider()
+
     st.write("Improving by MEB")
+    
     st.divider()
 
 

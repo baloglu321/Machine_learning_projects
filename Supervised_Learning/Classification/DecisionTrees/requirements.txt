@@ -4,4 +4,3 @@ pandas==1.5.1
 yfinance==0.2.40
 scikit_learn==1.2.0
 streamlit==1.36.0
-

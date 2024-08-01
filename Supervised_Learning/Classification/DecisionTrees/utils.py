@@ -85,7 +85,7 @@ def encode(data):
 def predict(In_values):
     pred_data = load_and_transform(In_values)
 
-    with open("models/knn_model.pkl", "rb") as file:
+    with open("models/decision_model.pkl", "rb") as file:
         model = pickle.load(file)
     prediction = model.predict(pred_data)
     return prediction[0]
