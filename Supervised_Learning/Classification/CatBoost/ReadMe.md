@@ -8,6 +8,6 @@
     streamlit run main.py
 
 
+![Ekran görüntüsü 2024-07-24 224107](https://github.com/user-attachments/assets/fbde8213-b677-42fd-9ffd-41668f2faec1)
 
-![Ekran görüntüsü 2024-07-24 224107](https://github.com/user-attachments/assets/2f61b4ef-5d0e-42d0-9357-5dcd7718dbe7)
 
