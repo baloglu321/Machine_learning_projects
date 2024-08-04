@@ -6,7 +6,4 @@
     cd Machine_learning_projects/Supervised_Learning/Classification/LightGBM/
     pip install -r requirements.txt
     streamlit run main.py
-
-
-
-![Ekran görüntüsü 2024-07-24 224107](https://github.com/user-attachments/assets/ef5ae023-ba1a-4bc8-a319-d6f29877e908)
+![Ekran görüntüsü 2024-07-24 224107](https://github.com/user-attachments/assets/9698c4d2-b895-48d0-ab80-dcca0e294f23)
