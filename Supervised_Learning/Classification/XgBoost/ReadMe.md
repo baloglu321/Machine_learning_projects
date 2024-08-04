@@ -9,4 +9,5 @@
 
 
 
-![Ekran görüntüsü 2024-07-24 224107](https://github.com/user-attachments/assets/ef5ae023-ba1a-4bc8-a319-d6f29877e908)
+![Ekran görüntüsü 2024-07-24 224107](https://github.com/user-attachments/assets/2f61b4ef-5d0e-42d0-9357-5dcd7718dbe7)
+
