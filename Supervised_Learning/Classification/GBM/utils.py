@@ -1,13 +1,16 @@
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.model_selection import train_test_split
+
+
 import pickle
+import os
 
 
 def load_and_transform(data):
-    with open("models/label_encoder.pkl", "rb") as file:
+    with open("models/ohe_encoder.pkl", "rb") as file:
         encoders = pickle.load(file)
     df_le = data.copy()
     c = df_le.dtypes == "object"
@@ -16,7 +19,14 @@ def load_and_transform(data):
     for i in object_cols:
         if i in encoders:
             encoder = encoders[i]
-            df_le[i] = encoder.transform(df_le[i])
+            reshaped_data = df_le[i].values.reshape(-1, 1)
+            df_ohe = encoder.transform(reshaped_data)
+            ohe_df = pd.DataFrame(
+                df_ohe, columns=encoder.get_feature_names_out([i]), index=df_le.index
+            )
+            df_le = df_le.drop(columns=[i])
+            df_le = pd.concat([df_le, ohe_df], axis=1)
+
         else:
             raise ValueError(f"No encoder found for column {i}")
 
@@ -55,22 +65,39 @@ def encode(data):
     object_cols.remove("Segmentation")
 
     for i in object_cols:
-        le = LabelEncoder()
-        df_le[i] = le.fit_transform(df_le[i])
-        encoders[i] = le
+        ohe = OneHotEncoder(sparse=False)
+        reshaped_data = df_le[i].values.reshape(-1, 1)
+        df_ohe = ohe.fit_transform(reshaped_data)
+        ohe_df = pd.DataFrame(
+            df_ohe, columns=ohe.get_feature_names_out([i]), index=df_le.index
+        )
+        df_le = df_le.drop(columns=[i])
+        df_le = pd.concat([df_le, ohe_df], axis=1)
+        encoders[i] = ohe
 
-    with open("models/label_encoder.pkl", "wb") as file:
+    with open("models/ohe_encoder.pkl", "wb") as file:
         pickle.dump(encoders, file)
 
     return df_le
 
 
+def out_encode(data):
+    le = LabelEncoder()
+    encoded_data = le.fit_transform(data)
+    with open("models/out_encoder.pkl", "wb") as file:
+        pickle.dump(le, file)
+    return encoded_data
+
+
 def predict(In_values):
     pred_data = load_and_transform(In_values)
 
-    with open("models/rf_model.pkl", "rb") as file:
+    with open("models/gbm_model.pkl", "rb") as file:
         model = pickle.load(file)
     prediction = model.predict(pred_data)
+    with open("models/out_encoder.pkl", "rb") as file:
+        out_encoder = pickle.load(file)
+    prediction = out_encoder.inverse_transform(prediction)
     return prediction[0]
 
 
@@ -83,23 +110,31 @@ def update_model():
     y = encode_df["Segmentation"]  # Target variable
 
     # Split the data into training and testing sets
-    X_train_LE, X_test_LE, y_train_LE, y_test_LE = train_test_split(
+    X_train_OHE, X_test_OHE, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42
     )
-    rf = RandomForestClassifier()
-    rf.fit(X_train_LE, y_train_LE)
-    with open("models/rf_model.pkl", "wb") as file:
-        pickle.dump(rf, file)
 
-    y_pred_train_rf = rf.predict(X_train_LE)
-    y_pred = rf.predict(X_test_LE)
-    accuracy = accuracy_score(y_train_LE, y_pred_train_rf)
-    report = classification_report(y_test_LE, y_pred)
+    # save scaler model for after
+    os.makedirs("models/", exist_ok=True)
+
+    y_test_encode = out_encode(y_test)
+    y_train_encode = out_encode(y_train)
+
+    model_gbm = GradientBoostingClassifier(
+        n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42
+    )
+    model_gbm.fit(X_train_OHE, y_train_encode)
+    with open("models/gbm_model.pkl", "wb") as file:
+        pickle.dump(model_gbm, file)
+
+    y_pred = model_gbm.predict(X_test_OHE)
+    accuracy = accuracy_score(y_test_encode, y_pred)
+    report = classification_report(y_test_encode, y_pred)
     model_status = [accuracy, report]
     with open("models/model_performance.txt", "w") as file:
         for metric in model_status:
             file.write(f"{metric}\n")
-    return rf
+    return model_gbm
 
 
 """    
