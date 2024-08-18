@@ -12,7 +12,7 @@ warnings.filterwarnings("ignore")
 
 # Streamlit UI
 st.title(
-    "Hierarchical Clustering için elbow methodu kullanarak cluster tavsiye uygulaması"
+    "Hierarchical Clustering için elbow methodu kullanarak küme sayısı tavsiye uygulaması"
 )
 
 # Upload Data
