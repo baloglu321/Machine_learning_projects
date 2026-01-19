@@ -122,7 +122,12 @@ def update_model():
     y_train_encode = out_encode(y_train)
 
     base_estimator = DecisionTreeClassifier(max_depth=1)
-    adaboost = AdaBoostClassifier(base_estimator=base_estimator, n_estimators=50, learning_rate=1.0, random_state=42)
+    adaboost = AdaBoostClassifier(
+        base_estimator=base_estimator,
+        n_estimators=50,
+        learning_rate=1.0,
+        random_state=42,
+    )
     adaboost.fit(X_train_OHE, y_train_encode)
     with open("models/adaboost_model.pkl", "wb") as file:
         pickle.dump(adaboost, file)

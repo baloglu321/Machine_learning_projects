@@ -86,7 +86,7 @@ def out_encode(data):
     encoded_data = le.fit_transform(data)
     with open("models/out_encoder.pkl", "wb") as file:
         pickle.dump(le, file)
-    return encoded_data,le
+    return encoded_data, le
 
 
 def predict(In_values):
@@ -117,16 +117,16 @@ def update_model():
     # save scaler model for after
     os.makedirs("models/", exist_ok=True)
 
-    y_test_encode,le = out_encode(y_test)
-    y_train_encode,le = out_encode(y_train)
+    y_test_encode, le = out_encode(y_test)
+    y_train_encode, le = out_encode(y_train)
 
     xg_model = xgb.XGBClassifier(
-    n_estimators=100,
-    learning_rate=0.1,
-    max_depth=3,
-    objective='multi:softmax',
-    num_class=len(le.classes_)
-)
+        n_estimators=100,
+        learning_rate=0.1,
+        max_depth=3,
+        objective="multi:softmax",
+        num_class=len(le.classes_),
+    )
     xg_model.fit(X_train_OHE, y_train_encode)
     with open("models/xg_model.pkl", "wb") as file:
         pickle.dump(xg_model, file)

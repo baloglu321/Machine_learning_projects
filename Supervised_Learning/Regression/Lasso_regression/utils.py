@@ -85,5 +85,8 @@ def update_model():
 
     mse = mean_squared_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
-    lasso_coefficients =  pd.DataFrame(pd.Series(model.coef_, index=["Low", "High", "Open", "Close"]),columns=["Value"])
-    return model, mse, r2,lasso_coefficients
+    lasso_coefficients = pd.DataFrame(
+        pd.Series(model.coef_, index=["Low", "High", "Open", "Close"]),
+        columns=["Value"],
+    )
+    return model, mse, r2, lasso_coefficients
